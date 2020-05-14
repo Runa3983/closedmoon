@@ -6,11 +6,9 @@
 // 変数
 int sceneCounter;
 
-SCENE_ID sceneID;		// シーン管理用
-SCENE_ID sceneIDpre;		// 前回のシーン管理用
+SCENE_ID sceneID;		// シーン管理
+SCENE_ID sceneIDpre;		// 前回のシーン管理
 KEY_ID keyID;
-
-
 
 // WinMain関数
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
@@ -49,9 +47,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 					fadeIn = true;
 					sceneID = SCENE_ID_GAME;
 				}
-
 			}
-
 			TitleScene();
 			break;
 		case SCENE_ID_GAME:			// ゲームシーン
@@ -71,7 +67,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 					sceneID = SCENE_ID_GAMEOVER;
 				}
 			}
-
 			GameScene();
 			break;
 		case SCENE_ID_GAMEOVER:			// ゲームオーバーシーン
@@ -99,9 +94,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		}
 
 		// メイン処理
-
 		sceneCounter++;
-
 		ScreenFlip();	 // 裏画面を表画面に瞬間ｺﾋﾟｰ
 	}
 
