@@ -2,6 +2,7 @@
 #include"main.h"
 // •Ï”
 int sceneCounter;
+int test;
 
 // WinMainŠÖ”
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
