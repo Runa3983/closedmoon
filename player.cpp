@@ -8,12 +8,12 @@
 #define INIT_VELOCITY 70.0f			// ジャンプの初速度
 
 // 変数
-int P1StopImage;			// 停止中の画像
+int P1StopImage[2];			// 停止中の画像
 int P1RunImage;				// ダッシュ中の画像
 int P1JumpImage[2];			// ジャンプ中の画像(攻撃も含める)
 
 int P1DamegeImage;			// ダメージを受けた時の画像
-int P1Attack1Image;			// 通常攻撃の画像
+int P1Attack1Image[2];			// 通常攻撃の画像
 int P1Attack2Image[3];			// 特殊攻撃の画像
 
 
@@ -22,16 +22,17 @@ CHARACTER player1;
 void PlayerSystemInit(void)
 {
 	// 攻撃状態
-	P1Attack1Image = LoadGraph("image/attck1.png");
-	P1StopImage = LoadGraph("image/attck1.png");
+	P1Attack1Image[STATUS_NORMAL] = LoadGraph("image/attck1-1.png");
+	P1Attack1Image[STATUS_ATTCK] = LoadGraph("image/attck1-2.png");
+	P1StopImage[STATUS_NORMAL] = LoadGraph("image/Stop.png");
 
 	// プレイヤーの初期値
 	player1.pos = { 325,  325 };
 	player1.moveDir = DIR_RIGHT;
 	player1.size = { 100, 70 };
 	player1.sizeOffset = { player1.size.x / 2, player1.size.y / 2 };
-	player1.hitPosS = { 20,25 };
-	player1.hitPosE = { 18, 35 };
+	player1.hitPosS = { 35,30 };
+	player1.hitPosE = { 30, 120 };
 	player1.moveSpeed = 4;
 	player1.animCnt = 0;
 
@@ -60,7 +61,6 @@ void PlayerContol(void)
 	player1.runFlag = false;
 
 	// ジャンプ押下の判断
-	// player1.jumpFlag = false;
 	if (keyNew[KEY_ID_P1JUMP])
 	{
 		player1.jumpFlag = true;
@@ -125,7 +125,9 @@ void PlayerGameDraw(void)
 	//DrawGraph(325, 325, P1Attack1Image, true);
 
 	int p1attck = (player1.attckFlag) ? STATUS_ATTCK : STATUS_NORMAL;
-	int p1Image = P1StopImage;
+	int p1Image = P1StopImage[p1attck];
+
+	if (player1.attckFlag) p1Image = P1Attack1Image[p1attck];
 
 	// キャラクタの表示
 	if (player1.moveDir == DIR_RIGHT)
@@ -144,15 +146,9 @@ void PlayerGameDraw(void)
 			, true);
 	}
 
-	// キャラクターの画像の枠の表示
+	// キャラクターの当たり判定の枠の表示
 	DrawBox(player1.pos.x - player1.hitPosS.x, player1.pos.y - player1.hitPosS.y
 		, player1.pos.x + player1.hitPosE.x, player1.pos.y + player1.hitPosE.y
 		, GetColor(255, 0, 0)
-		, false);
-
-	// キャラクターの当たり判定の枠の表示
-	DrawBox(player1.pos.x + player1.sizeOffset.x, player1.pos.y + player1.sizeOffset.y
-		, player1.pos.x - player1.sizeOffset.x, player1.pos.y - player1.sizeOffset.y
-		, GetColor(0, 255, 255)
 		, false);
 }
