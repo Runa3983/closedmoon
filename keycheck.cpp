@@ -32,6 +32,7 @@ void keyCheck(void)
 	// 現在のキー情報を所得する
 	keyNew[KEY_ID_SPACE] = CheckHitKey(KEY_INPUT_SPACE);
 	keyNew[KEY_ID_PAUSE] = CheckHitKey(KEY_INPUT_P);
+	keyNew[KEY_ID_P1ATTCK] = CheckHitKey(KEY_INPUT_Z);
 
 	// トリガー情報を所得する
 	for (int keyID = 0; keyID < KEY_ID_MAX; keyID++)
