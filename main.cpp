@@ -159,6 +159,7 @@ void GameScene(void)
 
 	if (!keyDownTrigger[KEY_ID_PAUSE])
 	{
+		PlayerContol();
 		testcnt++;
 	}
 
