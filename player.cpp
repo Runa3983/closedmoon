@@ -4,7 +4,9 @@
 #include"keycheck.h"
 
 #define STATUS_NORMAL 0
-#define STATUS_ATTCK 1
+#define STATUS_ATTCK1 1
+#define STATUS_ATTCK2 2
+#define STATUS_ATTCK3 3
 #define INIT_VELOCITY 70.0f			// ジャンプの初速度
 
 // 変数
@@ -13,8 +15,9 @@ int P1RunImage;				// ダッシュ中の画像
 int P1JumpImage[2];			// ジャンプ中の画像(攻撃も含める)
 
 int P1DamegeImage;			// ダメージを受けた時の画像
-int P1Attack1Image[2];			// 通常攻撃の画像
-int P1Attack2Image[3];			// 特殊攻撃の画像
+int P1AttackImage[2];			// 通常攻撃の画像
+int P1Attack1Image[3];			// 特殊攻撃1の画像
+int P1Attack2Image[3];			// 特殊攻撃2の画像
 
 
 CHARACTER player1;
@@ -22,9 +25,15 @@ CHARACTER player1;
 void PlayerSystemInit(void)
 {
 	// 攻撃状態
-	P1Attack1Image[STATUS_NORMAL] = LoadGraph("image/attck1-1.png");
-	P1Attack1Image[STATUS_ATTCK] = LoadGraph("image/attck1-2.png");
-	P1StopImage[STATUS_NORMAL] = LoadGraph("image/Stop.png");
+	P1AttackImage[STATUS_NORMAL] = LoadGraph("image/attck1-1.png");
+	P1AttackImage[STATUS_ATTCK1] = LoadGraph("image/attck1-2.png");
+	//止まっている状態
+	P1StopImage[STATUS_NORMAL] = LoadGraph("image/Stop1-1.png");
+	P1StopImage[STATUS_ATTCK1] = LoadGraph("image/Stop1-2.png");
+	P1Attack2Image[STATUS_NORMAL] = LoadGraph("image/sattck1-1.png");
+	// ジャンプ状態
+	P1JumpImage[STATUS_NORMAL] = LoadGraph("image/Jump.png");
+
 
 	// プレイヤーの初期値
 	player1.pos = { 325,  325 };
@@ -36,10 +45,14 @@ void PlayerSystemInit(void)
 	player1.moveSpeed = 4;
 	player1.animCnt = 0;
 
-	player1.attckFlag = false;			// キャラクターの状態
-	player1.runFlag = false;			// キャラクターの状態
-	player1.jumpFlag = false;			// キャラクターの状態
-	player1.damageFlag = false;			// キャラクターの状態
+	player1.attckFlag = false;			// キャラクターの攻撃状態
+	player1.sattck1Flag = false;			// キャラクターの特殊攻撃1状態
+	player1.sattck2Flag = false;			// キャラクターの特殊攻撃2状態
+	player1.sattck3Flag = false;			// キャラクターの特殊攻撃3状態
+	player1.runFlag = false;			// キャラクターの歩き状態
+	player1.jumpFlag = false;			// キャラクターのジャンプ状態
+	player1.damageFlag = false;			// キャラクターのダメージ状態
+
 	player1.imgLockCnt = 0;				// キャラクターの状態
 	player1.velocity = { 0, INIT_VELOCITY };
 }
@@ -124,10 +137,12 @@ void PlayerGameDraw(void)
 {
 	//DrawGraph(325, 325, P1Attack1Image, true);
 
-	int p1attck = (player1.attckFlag) ? STATUS_ATTCK : STATUS_NORMAL;
+	int p1attck = (player1.attckFlag) ? STATUS_ATTCK1 : STATUS_NORMAL;
 	int p1Image = P1StopImage[p1attck];
 
-	if (player1.attckFlag) p1Image = P1Attack1Image[p1attck];
+
+	if (player1.attckFlag) p1Image = P1AttackImage[p1attck];
+	if (player1.jumpFlag) p1Image = P1JumpImage[p1attck];
 
 	// キャラクタの表示
 	if (player1.moveDir == DIR_RIGHT)
