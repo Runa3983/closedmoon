@@ -2,6 +2,7 @@
 #include"main.h"
 #include"effect.h"
 #include"keycheck.h"
+#include"stage.h"
 #include"player.h"
 // 変数
 int sceneCounter;
@@ -124,6 +125,7 @@ bool SystemInit(void)
 
 	EffectInit();			// エフェクト用初期化処理
 
+	StageSystemInit();
 	PlayerSystemInit();
 	return true;
 }
@@ -131,7 +133,7 @@ bool SystemInit(void)
 // 初期化シーン
 void InitScene(void)
 {
-
+	PlayerGameInit();
 }
 
 // タイトルシーン
@@ -167,8 +169,9 @@ void GameScene(void)
 }
 void GameDraw(void)
 {
-	PlayerGameDraw();
 
+	StageGameDraw();
+	PlayerGameDraw();
 	DrawFormatString(0, 0, GetColor(255, 255, 255), "GameScene = %d", sceneCounter);
 	DrawFormatString(50, 50, GetColor(255, 255, 255), "test = %d", testcnt);
 
